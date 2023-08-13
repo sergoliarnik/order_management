@@ -1,0 +1,36 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-order-table
+      author: Serhii
+      changes:
+        - createTable:
+            tableName: orders
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    referencedTableName: users
+                    referencedColumnNames: id
+                    foreignKeyName: user_order_fk
+              - column:
+                  name: product_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    referencedTableName: product
+                    referencedColumnNames: id
+                    foreignKeyName: product_order_fk
+              - column:
+                  name: status
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
