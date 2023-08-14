@@ -12,6 +12,7 @@ import com.example.order_management.repository.UserRepo;
 import com.example.order_management.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +27,7 @@ public class OrderServiceImpl implements OrderService {
     private final UserRepo userRepo;
     private final ProductRepo productRepo;
     private final ModelMapper mapper;
+    private final SimpMessagingTemplate template;
 
     @Override
     public void makeOrder(Long userId, List<MakeOrderDto> orders) {
@@ -42,6 +44,7 @@ public class OrderServiceImpl implements OrderService {
             }
         });
         orderRepo.saveAll(userOrders);
+        template.convertAndSend("/topic/orders", getUserOrdersWithStatus(OrderStatus.ORDERED));
     }
 
     @Override
@@ -56,5 +59,9 @@ public class OrderServiceImpl implements OrderService {
     public void updateOrderStatus(Long id, OrderStatus status) {
         Order order = orderRepo.findById(id).get();
         order.setStatus(status);
+        template.convertAndSend("/topic/orders", getUserOrdersWithStatus(OrderStatus.ORDERED));
+        template.convertAndSend("/topic/inprogress", getUserOrdersWithStatus(OrderStatus.INPROGRESS));
+        template.convertAndSend("/topic/ready", getUserOrdersWithStatus(OrderStatus.READY));
+
     }
 }
