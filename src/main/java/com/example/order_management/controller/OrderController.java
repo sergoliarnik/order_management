@@ -1,10 +1,12 @@
 package com.example.order_management.controller;
 
 import com.example.order_management.dto.MakeOrderDto;
+import com.example.order_management.dto.OrderDto;
 import com.example.order_management.enums.OrderStatus;
 import com.example.order_management.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,5 +30,11 @@ public class OrderController {
     @ResponseBody
     public void updateOrderStatus(@PathVariable Long id, @RequestParam OrderStatus status){
         orderService.updateOrderStatus(id, status);
+    }
+
+    @GetMapping("/getUserOrders")
+    @ResponseBody
+    public List<OrderDto> getUserOrdersWithStatus(@RequestParam OrderStatus status){
+        return orderService.getUserOrdersWithStatus(status);
     }
 }

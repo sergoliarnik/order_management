@@ -19,45 +19,15 @@
 <div class="container">
     <div>
         <h1>Ordered</h1>
-        <ul class="listCard">
-            <c:forEach var="value" items="${orderedList}">
-                <li>
-                    <div><img src="${value.productImageUrl}"></div>
-                    <div>${value.userName}</div>
-                    <div>${value.productName}</div>
-                    <div></div>
-                    <div hidden="hidden"><c:out value="${value.id}"/></div>
-                </li>
-            </c:forEach>
-        </ul>
+        <ul class="listCard"></ul>
     </div>
     <div>
         <h1>Inprogress</h1>
-        <ul class="listCard">
-            <c:forEach var="value" items="${inprogressList}">
-                <li>
-                    <div><img src="${value.productImageUrl}"></div>
-                    <div>${value.userName}</div>
-                    <div>${value.productName}</div>
-                    <div></div>
-                    <div hidden="hidden"><c:out value="${value.id}"/></div>
-                </li>
-            </c:forEach>
-        </ul>
+        <ul class="listCard"></ul>
     </div>
     <div>
         <h1>Ready</h1>
-        <ul class="listCard">
-            <c:forEach var="value" items="${readyList}">
-                <li>
-                    <div><img src="${value.productImageUrl}"></div>
-                    <div>${value.userName}</div>
-                    <div>${value.productName}</div>
-                    <div></div>
-                    <div hidden="hidden"><c:out value="${value.id}"/></div>
-                </li>
-            </c:forEach>
-        </ul>
+        <ul class="listCard"></ul>
     </div>
 </div>
 <script src="js/employee.js"></script>

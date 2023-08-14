@@ -37,7 +37,7 @@ public class OrderServiceImpl implements OrderService {
                 userOrders.add(Order.builder()
                         .user(user)
                         .product(product)
-                        .status(OrderStatus.INPROGRESS)
+                        .status(OrderStatus.ORDERED)
                         .build());
             }
         });
@@ -45,7 +45,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderDto> getUserOrderWithStatus(OrderStatus status) {
+    public List<OrderDto> getUserOrdersWithStatus(OrderStatus status) {
         return orderRepo.findAllByStatus(status).stream()
                 .map(order -> mapper.map(order, OrderDto.class))
                 .collect(Collectors.toList());
