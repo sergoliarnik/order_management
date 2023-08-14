@@ -1,0 +1,36 @@
+h1{
+    color: #000000;
+    font-weight: 100;
+    margin: 0;
+    padding: 0 20px;
+    height: 80px;
+    text-align: center;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 33% 33% 33%;
+}
+
+.listCard li{
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
+    color: #000000;
+    row-gap: 10px;
+    margin-bottom: 20px;
+}
+
+.listCard li div{
+    justify-content: center;
+    align-items: center;
+}
+
+.listCard li img{
+    width: 80%;
+}
+
+.listCard button{
+    width: auto;
+    background-color: #fff5;
+    border: none;
+}
