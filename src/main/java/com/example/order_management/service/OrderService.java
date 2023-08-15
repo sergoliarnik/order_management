@@ -7,9 +7,9 @@ import com.example.order_management.enums.OrderStatus;
 import java.util.List;
 
 public interface OrderService {
-    void makeOrder(Long userId, List<MakeOrderDto> orders);
+    void saveOrders(Long userId, List<MakeOrderDto> orders);
 
-    List<OrderDto> getUserOrdersWithStatus(OrderStatus status);
+    List<OrderDto> getOrdersWithStatus(OrderStatus status);
 
     void updateOrderStatus(Long id, OrderStatus status);
 }

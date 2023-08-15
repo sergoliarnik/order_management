@@ -5,9 +5,9 @@ import com.example.order_management.enums.OrderStatus;
 import com.example.order_management.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -18,15 +18,15 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping("/products")
-    public String getProducts(Model model){
-        model.addAttribute("products", productService.getAllProducts());
-        return "products";
+    @ResponseBody
+    public List<ProductDto> getAllProducts(){
+        return productService.getAllProducts();
     }
 
 
-    @GetMapping("/products_in_order/{status}")
+    @GetMapping("/products_in_order")
     @ResponseBody
-    public List<ProductDto> getUserProductsWithStatus(@PathVariable OrderStatus status){
+    public List<ProductDto> getUserProductsWithStatus(@RequestParam OrderStatus status){
         Long userId = 1L;
         return productService.getUserProductsWithStatus(userId, status);
     }

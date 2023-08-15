@@ -30,15 +30,15 @@ initApp();
 
 function initApp(){
     let xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "GET", "http://localhost:8080/getUserOrders?status=ORDERED", false );
+    xmlHttp.open( "GET", "http://localhost:8080/employee/orders?status=ORDERED", false );
     xmlHttp.send( null );
     let orders = JSON.parse(xmlHttp.responseText);
     reloadOrderedList(orders)
-    xmlHttp.open( "GET", "http://localhost:8080/getUserOrders?status=INPROGRESS", false );
+    xmlHttp.open( "GET", "http://localhost:8080/employee/orders?status=INPROGRESS", false );
     xmlHttp.send( null );
     let inprogress = JSON.parse(xmlHttp.responseText);
     reloadInprogressList(inprogress)
-    xmlHttp.open( "GET", "http://localhost:8080/getUserOrders?status=READY", false );
+    xmlHttp.open( "GET", "http://localhost:8080/employee/orders?status=READY", false );
     xmlHttp.send( null );
     let ready = JSON.parse(xmlHttp.responseText);
     reloadReadyList(ready)
@@ -96,7 +96,7 @@ function reloadReadyList(ready) {
 
 function updateOrderStatus(id, status){
     const xhr = new XMLHttpRequest();
-    xhr.open("PATCH", `http://localhost:8080/updateOrderStatus/${id}?status=${status}`, false);
+    xhr.open("PATCH", `http://localhost:8080/orders/${id}?status=${status}`, false);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send();
     listCards = [];
