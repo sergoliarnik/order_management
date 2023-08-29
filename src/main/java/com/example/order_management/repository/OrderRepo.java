@@ -11,6 +11,12 @@ import java.util.List;
 
 @Repository
 public interface OrderRepo extends JpaRepository<Order, Long> {
+    /**
+     * Finds all orders with the specified status.
+     *
+     * @param status The status of the orders.
+     * @return A list of orders.
+     */
     @Query("FROM Order o JOIN FETCH o.user JOIN FETCH o.product WHERE o.status = :status")
     List<Order> findAllByStatus(OrderStatus status);
 }

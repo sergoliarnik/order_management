@@ -1,11 +1,12 @@
 package com.example.order_management.service.impl;
 
-import com.example.order_management.dto.MakeOrderDto;
+import com.example.order_management.dto.OrderedProductDto;
 import com.example.order_management.dto.OrderDto;
 import com.example.order_management.entity.Order;
 import com.example.order_management.entity.Product;
 import com.example.order_management.entity.User;
 import com.example.order_management.enums.OrderStatus;
+import com.example.order_management.exception.ResourceNotFoundException;
 import com.example.order_management.repository.OrderRepo;
 import com.example.order_management.repository.ProductRepo;
 import com.example.order_management.repository.UserRepo;
@@ -31,13 +32,26 @@ public class OrderServiceImpl implements OrderService {
     private final ModelMapper mapper;
     private final SimpMessagingTemplate template;
 
+    /**
+     * @inheritDoc
+     */
     @Override
-    public void saveOrders(Long userId, List<MakeOrderDto> orders) {
+    public void createOrders(long userId, List<OrderedProductDto> orderedProducts) {
+        User user = userRepo.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "id", String.valueOf(userId)));
+
+        List<Long> productIds = orderedProducts.stream()
+                .map(OrderedProductDto::getProductId)
+                .collect(Collectors.toList());
+
+        List<Product> products = productRepo.findAllById(productIds);
+
         List<Order> userOrders = new ArrayList<>();
-        User user = userRepo.findById(userId).get();
-        orders.forEach(order -> {
-            Product product = productRepo.findById(order.getId()).get();
-            for(int i = 0; i< order.getQuantity();i++){
+
+        orderedProducts.forEach(order -> {
+            Product product = products.stream().filter(prod -> prod.getId() == order.getProductId()).findFirst()
+                    .orElseThrow(() -> new ResourceNotFoundException("Product", "id", String.valueOf(order.getProductId())));
+            for (int i = 0; i < order.getQuantity(); i++) {
                 userOrders.add(Order.builder()
                         .user(user)
                         .product(product)
@@ -49,24 +63,30 @@ public class OrderServiceImpl implements OrderService {
         template.convertAndSend("/topic/orders", getOrdersWithStatus(OrderStatus.ORDERED));
     }
 
+    /**
+     * @inheritDoc
+     */
     @Override
+    @Transactional(readOnly = true)
     public List<OrderDto> getOrdersWithStatus(OrderStatus status) {
         return orderRepo.findAllByStatus(status).stream()
                 .map(order -> mapper.map(order, OrderDto.class))
                 .collect(Collectors.toList());
     }
 
+    /**
+     * @inheritDoc
+     */
     @Override
     @Transactional
-    public void updateOrderStatus(Long id, OrderStatus status) {
-        Order order = orderRepo.findById(id).get();
+    public void updateOrderStatus(Long orderId, OrderStatus status) {
+        Order order = orderRepo.findById(orderId).orElseThrow(() ->
+                new ResourceNotFoundException("Order", "id", orderId.toString()));
         order.setStatus(status);
         template.convertAndSend("/topic/orders", getOrdersWithStatus(OrderStatus.ORDERED));
         template.convertAndSend("/topic/inprogress", getOrdersWithStatus(OrderStatus.INPROGRESS));
         template.convertAndSend("/topic/ready", getOrdersWithStatus(OrderStatus.READY));
         template.convertAndSend("/topic/current_user_inprogress", productService.getUserProductsWithStatus(order.getUser().getId(), OrderStatus.INPROGRESS));
         template.convertAndSend("/topic/current_user_ready", productService.getUserProductsWithStatus(order.getUser().getId(), OrderStatus.READY));
-
-
     }
 }
