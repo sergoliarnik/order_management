@@ -2,6 +2,7 @@ package com.example.order_management;
 
 import com.example.order_management.dto.OrderDto;
 import com.example.order_management.dto.OrderedProductDto;
+import com.example.order_management.dto.ProductDto;
 import com.example.order_management.entity.Order;
 import com.example.order_management.entity.Product;
 import com.example.order_management.entity.User;
@@ -16,6 +17,7 @@ public final class ModelUtils {
     public static final String USER_PASSWORD = "password";
     public static final String PRODUCT_IMAGE_URL = "image_url";
     public static final String PRODUCT_NAME = "product_name";
+    public static final long PRODUCT_PRICE = 20;
 
     public static User getUser(){
         return User.builder()
@@ -31,7 +33,7 @@ public final class ModelUtils {
                 .imageUrl(PRODUCT_IMAGE_URL)
                 .id(PRODUCT_ID)
                 .name(PRODUCT_NAME)
-                .price(20)
+                .price(PRODUCT_PRICE)
                 .build();
     }
 
@@ -57,6 +59,15 @@ public final class ModelUtils {
                 .userName(USER_NAME)
                 .productName(PRODUCT_NAME)
                 .productImageUrl(PRODUCT_IMAGE_URL)
+                .build();
+    }
+
+    public static ProductDto getProductDto(){
+        return ProductDto.builder()
+                .id(PRODUCT_ID)
+                .name(PRODUCT_NAME)
+                .imageUrl(PRODUCT_IMAGE_URL)
+                .price(PRODUCT_PRICE)
                 .build();
     }
 
