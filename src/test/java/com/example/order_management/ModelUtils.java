@@ -19,6 +19,8 @@ public final class ModelUtils {
     public static final String PRODUCT_NAME = "product_name";
     public static final long PRODUCT_PRICE = 20;
 
+    public static final OrderStatus ORDER_STATUS = OrderStatus.ORDERED;
+
     public static User getUser(){
         return User.builder()
                 .id(USER_ID)

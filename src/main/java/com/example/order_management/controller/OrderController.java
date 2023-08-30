@@ -34,7 +34,7 @@ public class OrderController {
      */
     @PostMapping("/orders")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void saveOrders(@RequestBody @Valid List<OrderedProductDto> orderedProducts){
+    public void createOrders(@RequestBody @Valid List<OrderedProductDto> orderedProducts){
         long userId = 1L;
         orderService.createOrders(userId, orderedProducts);
     }
